@@ -1,0 +1,23 @@
+.label {
+  color: #707070;
+  font-size: 14px;
+  font-family: "Inter";
+}
+
+.input {
+  border: solid 0.5px #717171;
+  border-radius: 10px;
+  width: 317px;
+  height: 58px;
+  padding: 0 15px;
+  outline: none;
+}
+
+.input:focus {
+  border: solid 0.5px #0b23f4;
+}
+
+.input:disabled {
+  background-color: #e7e7e7;
+  color: #717171;
+}

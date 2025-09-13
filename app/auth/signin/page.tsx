@@ -1,3 +1,5 @@
+import LoginForm from "@/app/ui/login-form";
+
 export default function Page() {
-  return <div>Login Page</div>;
+  return <div><LoginForm /></div>;
 }
