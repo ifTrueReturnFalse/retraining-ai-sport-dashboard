@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Sportee",
+  title: "SPORTSEE",
   description: "Transformez vos stats en résultats",
 };
 
