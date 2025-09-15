@@ -1,3 +1,9 @@
+.logo {
+  position: relative;
+  height: 20.66px;
+  width: 19px;
+}
+
 .bar {
   width: 3px;
   position: absolute;

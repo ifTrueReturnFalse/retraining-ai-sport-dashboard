@@ -1,0 +1,37 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px;
+  position: absolute;
+}
+
+.navbar {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  width: 560px;
+  height: 40px;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 40px;
+}
+
+.link {
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  color: #111111;
+}
+
+.logoutButton {
+  color: blue;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.barNavbar {
+  color: #0b23f4;
+  font-weight: 400;
+}

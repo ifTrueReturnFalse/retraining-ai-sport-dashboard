@@ -10,18 +10,18 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         // Si pas de token ET pas sur la page de signin -> redirection
-        if (!token && !req.nextUrl.pathname.startsWith('/auth')) {
-          return false; 
+        if (!token && !req.nextUrl.pathname.startsWith("/auth")) {
+          return false;
         }
         return true;
       },
     },
     pages: {
-      signIn: '/auth/signin',
-    }
+      signIn: "/auth/signin",
+    },
   }
 );
 
 export const config = {
-  matcher: ['/'],
+  matcher: ["/", "/dashboard"],
 };

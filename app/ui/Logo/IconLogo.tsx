@@ -2,7 +2,7 @@ import styles from "./IconLogo.module.css";
 
 export default function IconLogo() {
   return (
-    <div className="h-[20.66px] w-[19px] pt-[2px]">
+    <div className={styles.logo}>
       <div>
         <div className={`${styles.redbar} ${styles.bar1} ${styles.bar}`}></div>
         <div className={`${styles.bluebar} ${styles.bar1} ${styles.bar}`}></div>

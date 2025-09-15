@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import NextAuthSessionProvider from "@/app/components/SessionProvider";
+import Header from "@/app/ui/Header";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,8 +21,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${inter.variable} antialiased`}>
-      <body className="font-[Inter] text-[#111111]">
-        {children}
+      <body className="font-[Inter] text-[#111111] m-auto">
+        <NextAuthSessionProvider>
+          <Header />
+          {children}
+        </NextAuthSessionProvider>
       </body>
     </html>
   );
