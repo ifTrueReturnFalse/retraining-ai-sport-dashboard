@@ -1,6 +1,5 @@
 import TextInput from "@/app/ui/TextInput/TextInput";
 import { Button } from "@/app/ui/Buttons/Buttons";
-import Link from "next/link";
 
 export default function LoginForm() {
   return (
@@ -16,7 +15,7 @@ export default function LoginForm() {
         <TextInput type="password" id="password" labelText="Mot de passe" className="mb-[40]" />
         <Button buttonText="Se connecter" isSubmitButton={true} className="mb-[15]" />
       </form>
-      <Link href="/">Mot de passe oublié</Link>
+      <p>Mot de passe oublié</p>
     </div>
   );
 }
