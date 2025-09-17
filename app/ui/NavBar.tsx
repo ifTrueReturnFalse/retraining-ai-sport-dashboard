@@ -3,11 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import styles from "./Common.module.css";
 
 export default function NavBar() {
-  const { data: session, status } = useSession();
   const links = [
     { name: "Dashboard", href: "/dashboard" },
     { name: "Coach AI", href: "/dashboard/coach" },
@@ -19,10 +18,6 @@ export default function NavBar() {
   const handleSignOut = async () => {
     await signOut({ callbackUrl: "/auth/signin" });
   };
-
-  if (status === "unauthenticated" || !session) {
-    return null;
-  }
 
   return (
     <nav suppressHydrationWarning className={styles.navbar}>

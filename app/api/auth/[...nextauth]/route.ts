@@ -32,16 +32,16 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(
-        credentials: { username?: string; password?: string } | undefined
+        credentials: { email?: string; password?: string } | undefined
       ) {
-        if (!credentials?.username || !credentials?.password) return null;
+        if (!credentials?.email || !credentials?.password) return null;
 
         const loginResponseData = await login(
-          credentials.username,
+          credentials.email,
           credentials.password
         );
 

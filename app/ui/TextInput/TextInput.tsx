@@ -6,7 +6,7 @@ interface TextInputProps {
   labelText: string;
   value?: string;
   disabled?: boolean;
-  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
 }
 
@@ -16,7 +16,7 @@ export default function TextInput({
   labelText,
   value,
   disabled = false,
-  handleChange,
+  onChange,
   className,
 }: TextInputProps) {
   return (
@@ -28,7 +28,7 @@ export default function TextInput({
         type={type}
         id={id}
         disabled={disabled}
-        onChange={handleChange}
+        onChange={onChange}
         value={value}
         className={`${className} ${styles.input}`}
       />

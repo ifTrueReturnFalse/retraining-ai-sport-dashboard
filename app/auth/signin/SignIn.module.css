@@ -4,3 +4,19 @@
   overflow-y: hidden;
   height: 100vh;
 }
+
+.imageContainer {
+  position: relative;
+}
+
+.hint {
+  color: #0b23f4;
+  background-color: white;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  padding: 15px;
+  bottom: 30px;
+  right: 30px;
+}
