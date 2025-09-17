@@ -1,0 +1,42 @@
+interface CheckResult {
+  message: string;
+  success: boolean;
+}
+
+/**
+ * Validates the provided credentials (email and password).
+ *
+ * This function performs a very basic check:
+ * - Ensures that the `email` has at least 2 characters.
+ * - Ensures that the `password` has at least 2 characters.
+ * - Returns a success flag and an error message if validation fails.
+ *
+ * @param {string} email - The email address to validate.
+ * @param {string} password - The password to validate.
+ * @returns {CheckResult} An object containing:
+ *  - `success`: `true` if both fields are valid, otherwise `false`.
+ *  - `message`: A descriptive error message when validation fails, or an empty string when successful.
+ *
+ * @example
+ * ```ts
+ * const result = checkCredentials("user@example.com", "1234");
+ * // result => { success: true, message: "" }
+ *
+ * const fail = checkCredentials("", "pw");
+ * // fail => { success: false, message: "Merci de renseigner un email" }
+ * ```
+ */
+export const checkCredentials = (
+  email: string,
+  password: string
+): CheckResult => {
+  const result = { success: false, message: "" };
+  if (email.length < 2) {
+    result.message = "Merci de renseigner un email";
+  } else if (password.length < 2) {
+    result.message = "Merci de renseigner votre mot de passe";
+  } else {
+    result.success = true;
+  }
+  return result;
+};

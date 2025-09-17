@@ -3,22 +3,58 @@ import styles from "./Buttons.module.css";
 interface ButtonsProps {
   buttonText: string;
   isSubmitButton: boolean;
-  handleClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   className?: string;
 }
 
+/**
+ * `Button` is a reusable button component with optional submit behavior,
+ * click handler, disabled state, and custom styling.
+ *
+ * Props:
+ * - `buttonText: string` — The text displayed inside the button.
+ * - `isSubmitButton: boolean` — Determines if the button acts as a form submit (`true`) or standard button (`false`).
+ * - `handleClick?: (e: React.MouseEvent<HTMLButtonElement>) => void` — Optional click handler for non-submit buttons.
+ * - `disabled?: boolean` — Whether the button is disabled (default: `false`).
+ * - `className?: string` — Optional additional CSS classes for custom styling.
+ *
+ * Example usage:
+ * ```tsx
+ * // Standard button
+ * <Button
+ *   buttonText="Click me"
+ *   isSubmitButton={false}
+ *   handleClick={(e) => console.log("Button clicked")}
+ * />
+ *
+ * // Submit button inside a form
+ * <form onSubmit={handleFormSubmit}>
+ *   <Button
+ *     buttonText="Submit"
+ *     isSubmitButton={true}
+ *     disabled={isSubmitting}
+ *     className="my-custom-class"
+ *   />
+ * </form>
+ * ```
+ *
+ * Notes:
+ * - When `isSubmitButton` is true, `handleClick` is typically not needed, 
+ *   as form submission is handled via the form's `onSubmit`.
+ * - The `className` prop allows you to pass extra styling on top of the default styles from `Buttons.module.css`.
+ */
 export function Button({
   buttonText,
   isSubmitButton,
-  handleClick,
+  onClick,
   disabled = false,
   className,
 }: ButtonsProps) {
   return (
     <button
       type={isSubmitButton ? "submit" : "button"}
-      onClick={handleClick}
+      onClick={onClick}
       disabled={disabled}
       className={`${className} ${styles.button}`}
     >

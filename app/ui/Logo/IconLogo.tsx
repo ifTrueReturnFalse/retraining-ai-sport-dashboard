@@ -1,5 +1,24 @@
 import styles from "./IconLogo.module.css";
 
+/**
+ * `IconLogo` is a presentational component that renders a custom logo using styled bars.
+ *
+ * The logo consists of 5 horizontal sections, each containing a red and blue bar.
+ * Styling and animations are handled via `IconLogo.module.css`.
+ *
+ * Example usage:
+ * ```tsx
+ * // Render the logo inside a header
+ * <header>
+ *   <IconLogo />
+ * </header>
+ * ```
+ *
+ * Notes:
+ * - This component has no props and is fully self-contained.
+ * - All visual appearance (colors, spacing, animations) is controlled via CSS modules.
+ * - Can be reused anywhere in the application where the logo is needed.
+ */
 export default function IconLogo() {
   return (
     <div className={styles.logo}>
