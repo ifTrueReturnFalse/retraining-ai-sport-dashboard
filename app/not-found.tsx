@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { Button } from "@/app/ui/Buttons/Buttons";
 import styles from "./notFound.module.css";
-
 
 /**
  * `NotFound` is the fallback page displayed when a user navigates
@@ -30,11 +30,11 @@ export default function NotFound() {
       </p>
 
       {/* Conditional link based on authentication status */}
-      <Link
-        href={session ? "/dashboard" : "/auth/signin"}
-        className={styles.link}
-      >
-        {session ? "Aller au dashboard" : "Se connecter"}
+      <Link href={session ? "/dashboard" : "/auth/signin"}>
+        <Button
+          isSubmitButton={false}
+          buttonText={session ? "Aller au dashboard" : "Se connecter"}
+        />
       </Link>
     </div>
   );
