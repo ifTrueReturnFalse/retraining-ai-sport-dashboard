@@ -13,6 +13,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "SPORTSEE",
   description: "Transformez vos stats en résultats",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
