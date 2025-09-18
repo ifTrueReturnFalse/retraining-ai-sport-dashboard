@@ -24,13 +24,13 @@
 }
 
 .logoutButton {
-  color: blue;
+  color: var(--blue-primary);
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;
 }
 
 .barNavbar {
-  color: #0b23f4;
+  color: var(--blue-primary);
   font-weight: 400;
 }

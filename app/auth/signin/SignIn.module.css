@@ -18,7 +18,7 @@
 }
 
 .hint {
-  color: #0b23f4;
+  color: var(--blue-primary);
   background-color: white;
   border-radius: 50px;
   font-size: 12px;

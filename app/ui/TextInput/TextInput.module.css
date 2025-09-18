@@ -14,7 +14,7 @@
 }
 
 .input:focus {
-  border: solid 0.5px #0b23f4;
+  border: solid 0.5px var(--blue-primary);
 }
 
 .input:disabled {
