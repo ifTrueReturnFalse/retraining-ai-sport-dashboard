@@ -4,8 +4,20 @@
   --background-color: #f2f3ff;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
-  max-width: 1440px;
-  max-height: 1024px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: var(--background-color);
+  max-width: 1440px;
+  margin: auto;
+}
+
+main {
+  flex: 1;
 }

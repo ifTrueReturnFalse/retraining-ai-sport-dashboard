@@ -5,7 +5,7 @@ import styles from "./SignIn.module.css";
 export default function Page() {
   return (
     <div className={styles.signInPage}>
-      <div className="flex-1 flex items-center">
+      <div className={styles.form}>
         <LoginForm />
       </div>
 
