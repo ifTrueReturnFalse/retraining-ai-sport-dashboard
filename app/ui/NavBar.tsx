@@ -31,7 +31,7 @@ export default function NavBar() {
   const links = [
     { name: "Dashboard", href: "/dashboard" },
     { name: "Coach AI", href: "/dashboard/coach" },
-    { name: "Mon profil", href: "/dashboard/profile" },
+    { name: "Mon profil", href: "/profile" },
   ];
 
   const pathname = usePathname();

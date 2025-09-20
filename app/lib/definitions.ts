@@ -10,9 +10,9 @@
  * - `message` (optional): Optional message from the backend (e.g., error or info).
  */
 export interface LoginResponse {
-  token?: string,
-  userId?: string,
-  message?: string
+  token?: string;
+  userId?: string;
+  message?: string;
 }
 
 /**
@@ -23,12 +23,12 @@ export interface LoginResponse {
 declare module "next-auth" {
   interface Session {
     /** Access token for API requests */
-    accessToken?: string
+    accessToken?: string;
   }
 
   interface User {
     /** Access token available during sign-in */
-    accessToken?: string
+    accessToken?: string;
   }
 }
 
@@ -42,4 +42,32 @@ declare module "next-auth/jwt" {
     /** Access token stored in the JWT */
     accessToken?: string;
   }
+}
+
+export interface UserProfile {
+  firstName: string;
+  lastName: string;
+  createdAt: string;
+  age: number;
+  weight: number;
+  height: number;
+  profilePicture?: string;
+}
+
+export interface UserStatistics {
+  totalDistance: number;
+  totalSessions: number;
+  totalDuration: number;
+}
+
+export interface UserData {
+  profile: UserProfile | null;
+  statistics: UserStatistics | null;
+}
+
+export interface UserContextType {
+  profile: UserProfile | null;
+  statistics: UserStatistics | null;
+  loading: boolean;
+  refreshUser: () => Promise<void>;
 }
