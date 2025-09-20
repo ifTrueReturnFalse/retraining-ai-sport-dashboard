@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { signOut } from "next-auth/react";
-import styles from "./Common.module.css";
+import styles from "./UiCSS/Common.module.css";
 
 /**
  * `NavBar` renders the main navigation for authenticated users.

@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./Footer.module.css";
+import styles from "./UiCSS/Footer.module.css";
 import IconLogo from "@/app/ui/Logo/IconLogo";
 import { usePathname } from "next/navigation";
 
