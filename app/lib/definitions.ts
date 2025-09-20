@@ -44,6 +44,23 @@ declare module "next-auth/jwt" {
   }
 }
 
+/**
+ * Utility type that allows a value to be either of type `T` or `null`.
+ */
+export type Nullable<T> = T | null;
+
+
+/**
+ * User's personal profile information.
+ *
+ * - `firstName`: User's first name.
+ * - `lastName`: User's last name.
+ * - `createdAt`: Account creation date (ISO string).
+ * - `age`: User's age.
+ * - `weight`: User's weight in kilograms.
+ * - `height`: User's height in centimeters.
+ * - `profilePicture` (optional): URL to the user's profile picture.
+ */
 export interface UserProfile {
   firstName: string;
   lastName: string;
@@ -54,20 +71,40 @@ export interface UserProfile {
   profilePicture?: string;
 }
 
+/**
+ * User's aggregated activity statistics.
+ *
+ * - `totalDistance` (optional): Total distance covered.
+ * - `totalSessions` (optional): Total number of sessions.
+ * - `totalDuration` (optional): Total duration of all sessions.
+ */
 export interface UserStatistics {
-  totalDistance: number;
-  totalSessions: number;
-  totalDuration: number;
+  totalDistance?: number;
+  totalSessions?: number;
+  totalDuration?: number;
 }
 
+
+/**
+ * Combined user data returned by the backend.
+ *
+ * - `profile`: User profile or `null` if unavailable.
+ * - `statistics`: User statistics or `null` if unavailable.
+ */
 export interface UserData {
-  profile: UserProfile | null;
-  statistics: UserStatistics | null;
+  profile: Nullable<UserProfile>;
+  statistics: Nullable<UserStatistics>;
 }
 
-export interface UserContextType {
-  profile: UserProfile | null;
-  statistics: UserStatistics | null;
+/**
+ * Shape of the UserContext state in React.
+ *
+ * - `profile`: User profile or `null`.
+ * - `statistics`: User statistics or `null`.
+ * - `loading`: Whether user data is currently being fetched.
+ * - `refreshUser`: Function to re-fetch profile and statistics.
+ */
+export interface UserContextType extends UserData {
   loading: boolean;
   refreshUser: () => Promise<void>;
 }

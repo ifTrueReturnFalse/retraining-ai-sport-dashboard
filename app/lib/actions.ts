@@ -37,6 +37,14 @@ export async function login(
   }
 }
 
+/**
+ * Fetches the authenticated user's profile and statistics from the API.
+ *
+ * @param accessToken - The JWT access token used for authentication.
+ * @returns The user data if the request succeeds, otherwise `null`.
+ *
+ * @throws {Error} If the request fails (non-2xx response).
+ */
 export async function fetchUser(accesToken: string) {
   try {
     const api_url = process.env.API_URL;
@@ -44,7 +52,7 @@ export async function fetchUser(accesToken: string) {
       headers: { Authorization: `Bearer ${accesToken}` },
       method: "GET",
     });
-    console.log(result);
+    
     if (!result.ok) {
       throw new Error("Failed to fetch user data");
     }
