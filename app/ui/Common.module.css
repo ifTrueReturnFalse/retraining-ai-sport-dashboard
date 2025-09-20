@@ -23,6 +23,10 @@
   color: #111111;
 }
 
+.activeLink {
+  color: var(--blue-primary);
+}
+
 .logoutButton {
   color: var(--blue-primary);
   font-size: 14px;

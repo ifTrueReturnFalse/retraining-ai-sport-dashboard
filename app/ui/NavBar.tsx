@@ -46,8 +46,8 @@ export default function NavBar() {
         return (
           <Link href={link.href} key={link.name}>
             <p
-              className={clsx(`${styles.link}`, {
-                "text-[#0b23f4]": pathname === link.href,
+              className={clsx(styles.link, {
+                [styles.activeLink]: pathname === link.href,
               })}
             >
               {link.name}
