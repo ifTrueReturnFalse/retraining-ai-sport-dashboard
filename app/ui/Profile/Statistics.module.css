@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.member {
+  color: #707070;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 30px;
+}
+
+.dataGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}

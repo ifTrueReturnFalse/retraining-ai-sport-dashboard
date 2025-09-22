@@ -1,0 +1,29 @@
+.container {
+  background-color: var(--blue-primary);
+  width: 280px;
+  height: 105px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 0 20px;
+}
+
+.title {
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.primaryValue {
+  color: white;
+  font-size: 22px;
+  font-weight: 500;
+  margin-right: 5px;
+}
+
+.secondaryValue {
+  color: #b6bdfc;
+  font-size: 16px;
+  font-weight: 500;
+}

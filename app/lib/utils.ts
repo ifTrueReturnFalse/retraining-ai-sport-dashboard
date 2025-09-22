@@ -40,3 +40,25 @@ export const checkCredentials = (
   }
   return result;
 };
+
+const monthToString = [
+  "janvier",
+  "février",
+  "mars",
+  "avril",
+  "mai",
+  "juin",
+  "juillet",
+  "août",
+  "septembre",
+  "octobre",
+  "novembre",
+  "décembre",
+];
+
+export const ISOToString = (date: string): string => {
+  const realDate = new Date(date)
+  return `${realDate.getDate()} ${
+    monthToString[realDate.getMonth()]
+  } ${realDate.getFullYear()}`;
+};

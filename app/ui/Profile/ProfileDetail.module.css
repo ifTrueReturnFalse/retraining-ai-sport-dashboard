@@ -1,0 +1,22 @@
+.container {
+  background-color: white;
+  border-radius: 10px;
+  width: 100%;
+  padding: 50px 30px;
+  min-height: 330px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.data {
+  color: #707070;
+  padding-top: 20px;
+  border-top: solid 1px #e7e7e7;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
