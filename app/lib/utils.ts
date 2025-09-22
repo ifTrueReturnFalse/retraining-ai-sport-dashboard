@@ -1,3 +1,5 @@
+import { ActivityType } from "./definitions";
+
 interface CheckResult {
   message: string;
   success: boolean;
@@ -62,3 +64,23 @@ export const ISOToString = (date: string): string => {
     monthToString[realDate.getMonth()]
   } ${realDate.getFullYear()}`;
 };
+
+export function countChillDays(creationDate: string, activityList: ActivityType[]): number {
+  const activitiesDate = new Set(
+    activityList.map(activity => activity.date)
+  )
+
+  let chillDays = 0
+  const currentDay = new Date(creationDate)
+  const endDay = new Date()
+
+  while (currentDay <= endDay) {
+    const dateString = currentDay.toISOString().split("T")[0]
+    if (!activitiesDate.has(dateString)) {
+      chillDays++
+    }
+    currentDay.setDate(currentDay.getDate() + 1)
+  }
+
+  return chillDays
+}
