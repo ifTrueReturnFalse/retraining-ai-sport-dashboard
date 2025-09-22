@@ -18,17 +18,23 @@ import { NextResponse } from "next/server";
  * @returns {Promise<NextResponse>} JSON response containing the user profile and statistics.
  */
 export async function GET() {
-  // Retrieve session from NextAuth
-  const session = await getServerSession(authOptions);
+  try {
+    const session = await getServerSession(authOptions);
 
-  // If no access token, return empty user data
-  if (!session?.accessToken) {
-    return NextResponse.json({ profile: null, statistics: null });
+    if (!session?.accessToken) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+
+    const userData = await fetchUser(session.accessToken);
+
+    if (!userData) throw new Error("User data not found or API down");
+
+    return NextResponse.json(userData);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Failed to fetch user info" },
+      { status: 500 }
+    );
   }
-
-  // Fetch user data from external API using the access token
-  const userData = await fetchUser(session.accessToken);
-
-  // Return the fetched data, or fallback to null values
-  return NextResponse.json(userData || { profile: null, statistics: null });
 }

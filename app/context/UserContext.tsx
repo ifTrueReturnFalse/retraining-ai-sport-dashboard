@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import {
   createContext,
   useEffect,
@@ -14,7 +14,6 @@ import {
   UserStatistics,
 } from "@/app/lib/definitions";
 
-
 /**
  * UserContext provides user-specific data and methods throughout the app.
  * It includes:
@@ -24,7 +23,6 @@ import {
  * - `refreshUser`: function to manually refresh user data
  */
 const UserContext = createContext<UserContextType | undefined>(undefined);
-
 
 /**
  * UserProvider wraps its children with the UserContext.
@@ -43,7 +41,7 @@ export default function UserProvider({
 }) {
   // Access current session from NextAuth
   const { data: session } = useSession();
-  
+
   // State to store user profile and statistics
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [userStatistics, setUserStatistics] = useState<UserStatistics | null>(
@@ -60,13 +58,22 @@ export default function UserProvider({
       setLoading(true);
       try {
         const response = await fetch("/api/user-info");
-        const data = await response.json()
+        
+        if(!response.ok) throw new Error("API not reachable")
+
+        const data = await response.json();
+        
         setUserProfile(data?.profile ?? null);
         setUserStatistics(data?.statistics ?? null);
-      } catch {
+      } catch (error) {
+        console.error("Failed to get user info : ", error);
+        
         // Reset data on fetch failure
         setUserProfile(null);
         setUserStatistics(null);
+        
+        // Trigger a failsafe logout
+        signOut({ callbackUrl: "/auth/signin" });
       } finally {
         setLoading(false);
       }
