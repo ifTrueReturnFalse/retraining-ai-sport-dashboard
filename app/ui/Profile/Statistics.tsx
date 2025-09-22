@@ -3,30 +3,27 @@
 import ProfileData from "./ProfileData";
 import { useUser } from "@/app/context/UserContext";
 import { useActivities } from "@/app/context/ActivitiesContext";
-import { ISOToString, countChillDays } from "@/app/lib/utils";
+import {
+  ISOToString,
+  burnedCalories,
+  countChillDays,
+  minutesToHoursAndMinutes,
+} from "@/app/lib/utils";
 import styles from "./Statistics.module.css";
 
 export default function Statistics() {
   const userData = useUser();
   const userActivities = useActivities();
-  let hours = 0;
-  let minutes = 0;
 
-  if (userData.statistics?.totalDuration) {
-    hours = Math.floor(userData.statistics?.totalDuration / 60);
-    minutes = userData.statistics?.totalDuration % 60;
-  }
+  const { hours, minutes } = userData.statistics?.totalDuration
+    ? minutesToHoursAndMinutes(userData.statistics.totalDuration)
+    : { hours: 0, minutes: 0 };
 
-  const burntCalories = userActivities.activities.reduce(
-    (totalCalories, activity) => totalCalories + activity.caloriesBurned,
-    0
-  )
+  const totalBurnedCalories = burnedCalories(userActivities.activities);
 
-  let chillDays = 0
-  if (userData.profile) {
-    chillDays = countChillDays(userData.profile?.createdAt, userActivities.activities)
-  }
-  console.log(userActivities)
+  const chillDays = userData.profile
+    ? countChillDays(userData.profile?.createdAt, userActivities.activities)
+    : 0;
 
   return (
     <div className={styles.container}>
@@ -42,16 +39,24 @@ export default function Statistics() {
           primaryValue={`${hours}h`}
           secondaryValue={`${minutes}min`}
         />
-        <ProfileData title="Calories brûlées" primaryValue={`${burntCalories}`} secondaryValue="cal" />
+        <ProfileData
+          title="Calories brûlées"
+          primaryValue={`${totalBurnedCalories}`}
+          secondaryValue="cal"
+        />
         <ProfileData
           title="Distance totale parcourue"
-          primaryValue={`${userData.statistics?.totalDistance}`}
+          primaryValue={`${userData.statistics?.totalDistance ?? 0}`}
           secondaryValue="km"
         />
-        <ProfileData title="Nombre de jours de repos" primaryValue={`${chillDays}`} secondaryValue="jours" />
+        <ProfileData
+          title="Nombre de jours de repos"
+          primaryValue={`${chillDays}`}
+          secondaryValue="jours"
+        />
         <ProfileData
           title="Nombre de sessions"
-          primaryValue={`${userData.statistics?.totalSessions}`}
+          primaryValue={`${userData.statistics?.totalSessions ?? 0}`}
           secondaryValue="sessions"
         />
       </div>
