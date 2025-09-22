@@ -40,6 +40,7 @@ export const authOptions: AuthOptions = {
   // Use JWT for session storage
   session: {
     strategy: "jwt" as SessionStrategy,
+    maxAge: 60 * 60 * 24,
   },
   callbacks: {
     // Called whenever a JWT is created or updated
