@@ -1,7 +1,8 @@
-'use client'
+"use client";
 
-import NextAuthSessionProvider from "./SessionProvider"
-import UserProvider from "./UserContext"
+import NextAuthSessionProvider from "./SessionProvider";
+import UserProvider from "./UserContext";
+import ActivitiesProvider from "./ActivitiesContext";
 
 /**
  * `Providers` is a wrapper component that combines all context providers
@@ -17,12 +18,12 @@ import UserProvider from "./UserContext"
  * @param {React.ReactNode} props.children - The nested components that will have access to the contexts.
  * @returns {JSX.Element} Wrapped children with all necessary providers.
  */
-export default function Providers({children}: {children: React.ReactNode}) {
+export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <NextAuthSessionProvider>
       <UserProvider>
-        {children}
+        <ActivitiesProvider>{children}</ActivitiesProvider>
       </UserProvider>
     </NextAuthSessionProvider>
-  )
+  );
 }

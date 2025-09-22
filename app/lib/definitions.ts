@@ -49,7 +49,6 @@ declare module "next-auth/jwt" {
  */
 export type Nullable<T> = T | null;
 
-
 /**
  * User's personal profile information.
  *
@@ -84,7 +83,6 @@ export interface UserStatistics {
   totalDuration?: number;
 }
 
-
 /**
  * Combined user data returned by the backend.
  *
@@ -107,4 +105,24 @@ export interface UserData {
 export interface UserContextType extends UserData {
   loading: boolean;
   refreshUser: () => Promise<void>;
+}
+
+export interface HeartRate {
+  min: number;
+  max: number;
+  average: number;
+}
+
+export interface ActivityType {
+  date: string;
+  distance: number;
+  dureation: number;
+  heartRate: HeartRate;
+  caloriesBurned: number;
+}
+
+export interface ActivitiesContextType {
+  activities: ActivityType[];
+  loading: boolean;
+  refresh?: () => void;
 }

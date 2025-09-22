@@ -1,4 +1,4 @@
-import { UserData } from "./definitions";
+import { ActivityType, UserData } from "./definitions";
 import { LoginResponse } from "@/app/lib/definitions";
 
 /**
@@ -52,12 +52,37 @@ export async function fetchUser(accesToken: string) {
       headers: { Authorization: `Bearer ${accesToken}` },
       method: "GET",
     });
-    
+
     if (!result.ok) {
       throw new Error("Failed to fetch user data");
     }
 
     const data: UserData = await result.json();
+    return data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function fetchActivities(
+  accessToken: string,
+  startWeek: string,
+  endWeek: string
+) {
+  try {
+    const api_url = process.env.API_URL;
+    const result = await fetch(
+      `${api_url}/user-activity?startWeek=${startWeek}&endWeek=${endWeek}`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        method: "GET",
+      }
+    );
+
+    if (!result.ok) throw new Error("Failed to fetch activities");
+
+    const data: ActivityType[] = await result.json();
     return data;
   } catch (error) {
     console.error(error);
