@@ -107,20 +107,43 @@ export interface UserContextType extends UserData {
   refreshUser: () => Promise<void>;
 }
 
+/**
+ * Heart rate measurements for a single activity.
+ *
+ * - `min`: Minimum heart rate recorded.
+ * - `max`: Maximum heart rate recorded.
+ * - `average`: Average heart rate during activity.
+ */
 export interface HeartRate {
   min: number;
   max: number;
   average: number;
 }
 
+/**
+ * Represents a single physical activity entry.
+ *
+ * - `date`: Activity date (ISO string).
+ * - `distance`: Distance covered during activity (km).
+ * - `duration`: Duration of activity (minutes).
+ * - `heartRate`: Heart rate information for the activity.
+ * - `caloriesBurned`: Calories burned during the activity.
+ */
 export interface ActivityType {
   date: string;
   distance: number;
-  dureation: number;
+  duration: number;
   heartRate: HeartRate;
   caloriesBurned: number;
 }
 
+/**
+ * Shape of the ActivitiesContext state in React.
+ *
+ * - `activities`: List of user activities.
+ * - `loading`: Whether activities are currently being fetched.
+ * - `refresh` (optional): Function to refresh the activities list.
+ */
 export interface ActivitiesContextType {
   activities: ActivityType[];
   loading: boolean;

@@ -38,7 +38,7 @@ export async function login(
 }
 
 /**
- * Fetches the authenticated user's profile and statistics from the API.
+ * Fetches the authenticated user's profile and statistics from the backend API.
  *
  * @param accessToken - The JWT access token used for authentication.
  * @returns The user data if the request succeeds, otherwise `null`.
@@ -65,6 +65,21 @@ export async function fetchUser(accesToken: string) {
   }
 }
 
+/**
+ * Fetches the user's activities for a specified week range.
+ *
+ * - `accessToken`: JWT access token used for authentication.
+ * - `startWeek`: Start date of the week range (ISO string).
+ * - `endWeek`: End date of the week range (ISO string).
+ *
+ * @returns A promise that resolves to an array of `ActivityType` if successful, or `null` if the request fails.
+ *
+ * @example
+ * ```ts
+ * const activities = await fetchActivities("jwt-token", "2025-09-01", "2025-09-07");
+ * console.log(activities?.length);
+ * ```
+ */
 export async function fetchActivities(
   accessToken: string,
   startWeek: string,

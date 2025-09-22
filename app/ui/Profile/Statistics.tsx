@@ -11,6 +11,20 @@ import {
 } from "@/app/lib/utils";
 import styles from "./Statistics.module.css";
 
+/**
+ * Statistics component.
+ *
+ * - Fetches user profile and activity data via context.
+ * - Displays key statistics such as:
+ *   - Total running time (hours/minutes).
+ *   - Calories burned.
+ *   - Total distance.
+ *   - Rest (chill) days.
+ *   - Number of sessions.
+ * - Formats dates and durations with helper functions from `utils`.
+ *
+ * @returns JSX element showing user statistics in a grid layout.
+ */
 export default function Statistics() {
   const userData = useUser();
   const userActivities = useActivities();
@@ -30,7 +44,7 @@ export default function Statistics() {
       <p className={styles.title}>Vos statistiques</p>
       {userData.profile?.createdAt && (
         <p className={styles.member}>{`depuis le ${ISOToString(
-          userData.profile?.createdAt
+          userData.profile.createdAt
         )}`}</p>
       )}
       <div className={styles.dataGrid}>

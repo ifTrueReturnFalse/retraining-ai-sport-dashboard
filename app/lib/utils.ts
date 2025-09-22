@@ -58,6 +58,14 @@ const monthToString = [
   "décembre",
 ];
 
+/**
+ * Converts an ISO date string into a human-readable format.
+ *
+ * Example: `"2025-09-20"` → `"20 septembre 2025"`.
+ *
+ * @param date - ISO date string.
+ * @returns Formatted date in French.
+ */
 export const ISOToString = (date: string): string => {
   const realDate = new Date(date);
   return `${realDate.getDate()} ${
@@ -65,6 +73,12 @@ export const ISOToString = (date: string): string => {
   } ${realDate.getFullYear()}`;
 };
 
+/**
+ * Converts a duration in minutes into hours and minutes.
+ *
+ * @param totalDuration - Duration in minutes.
+ * @returns Object containing `hours` and `minutes`.
+ */
 export function minutesToHoursAndMinutes(totalDuration: number): {
   hours: number;
   minutes: number;
@@ -75,6 +89,14 @@ export function minutesToHoursAndMinutes(totalDuration: number): {
   return { hours, minutes };
 }
 
+/**
+ * Calculates total burned calories from a list of activities.
+ *
+ * - Sums up the `caloriesBurned` property of each activity.
+ *
+ * @param activityList - List of activities.
+ * @returns Total calories burned.
+ */
 export function burnedCalories(activityList: ActivityType[]): number {
   const burnedCalories = activityList.reduce(
     (totalCalories, activity) => totalCalories + activity.caloriesBurned,
@@ -84,6 +106,16 @@ export function burnedCalories(activityList: ActivityType[]): number {
   return burnedCalories;
 }
 
+/**
+ * Counts the number of "chill days" (days with no activity).
+ *
+ * - Starts from the `creationDate` up to the current date.
+ * - A "chill day" is a day without any recorded activity.
+ *
+ * @param creationDate - User account creation date (ISO string).
+ * @param activityList - List of activities with their dates.
+ * @returns Number of days without activity.
+ */
 export function countChillDays(
   creationDate: string,
   activityList: ActivityType[]
