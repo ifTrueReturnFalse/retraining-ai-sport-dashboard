@@ -40,7 +40,7 @@ interface ButtonsProps {
  * ```
  *
  * Notes:
- * - When `isSubmitButton` is true, `handleClick` is typically not needed, 
+ * - When `isSubmitButton` is true, `handleClick` is typically not needed,
  *   as form submission is handled via the form's `onSubmit`.
  * - The `className` prop allows you to pass extra styling on top of the default styles from `Buttons.module.css`.
  */
@@ -59,6 +59,24 @@ export function Button({
       className={`${className} ${styles.button}`}
     >
       {buttonText}
+    </button>
+  );
+}
+
+interface ArrowButtonProps {
+  direction: "left" | "right";
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+}
+
+export function ArrowButton({
+  direction,
+  onClick,
+  className,
+}: ArrowButtonProps) {
+  return (
+    <button onClick={onClick} className={`${styles.arrowButton} ${className}`}>
+      {direction === "left" ? "<" : ">"}
     </button>
   );
 }

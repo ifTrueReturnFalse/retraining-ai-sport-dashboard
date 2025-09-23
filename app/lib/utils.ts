@@ -136,3 +136,10 @@ export function countChillDays(
 
   return chillDays;
 }
+
+export function dateToShortString(date: Date) {
+  const day = date.getDate()
+  const month = monthToString[date.getMonth()]
+
+  return `${day} ${month}`
+}

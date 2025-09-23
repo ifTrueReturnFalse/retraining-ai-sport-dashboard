@@ -14,3 +14,20 @@
   color: #707070;
   background-color: #e7e7e7;
 }
+
+.arrowButton {
+  background-color: white;
+  border: 1px solid #717171;
+  height: 24px;
+  width: 24px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrowButton:hover {
+  color: white;
+  border: 1px solid var(--blue-primary);
+  background-color: #5465f7;
+}

@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 450px;
+}
+
+.head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.mean {
+  color: var(--blue-primary);
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.legend {
+  font-size: 12px;
+  color: #707070;
+  margin-bottom: 20px;
+}
