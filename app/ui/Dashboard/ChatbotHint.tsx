@@ -1,0 +1,22 @@
+import Image from "next/image";
+import { Button } from "@/app/ui/Buttons/Buttons";
+import styles from './ChatbotHint.module.css'
+
+export default function ChatbotHint() {
+  return (
+    <div className={styles.chatbotHint}>
+      <Image
+        src="/stars.svg"
+        alt="Nice little stars to feel the IA magic !"
+        width={19}
+        height={20.46}
+        className="mr-5"
+      />
+      <p className="mr-15">
+        Posez vos questions sur votre programme, vos performances ou vos
+        objectifs.
+      </p>
+      <Button isSubmitButton={false} buttonText="Lancer une conversation" />
+    </div>
+  );
+}

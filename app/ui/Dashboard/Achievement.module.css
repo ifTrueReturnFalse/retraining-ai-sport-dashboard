@@ -1,0 +1,14 @@
+.achievement {
+  background-color: var(--blue-primary);
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 180px;
+  height: 90px;
+  border-radius: 10px;
+  font-size: 22px;
+  font-weight: 500;
+}
