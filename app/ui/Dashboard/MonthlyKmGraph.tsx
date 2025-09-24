@@ -3,15 +3,14 @@
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
 import CustomLegend from "./CustomLegend";
 import { useActivities } from "@/app/context/ActivitiesContext";
-import { useEffect, useState } from "react";
 import DateArrowButtonsCombo from "@/app/ui/Buttons/DateArrowButtonsCombo";
 import { getMonthlyActivities, splitByWeeks } from "@/app/lib/graph-utils";
 import styles from './MonthlyKmGraph.module.css'
+import { useDateRange } from "@/app/hooks/useDateRange";
 
 export default function MonthlyKmGraph() {
   const activities = useActivities();
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const {startDate, endDate, setEndDate} = useDateRange(new Date(), 28)
 
   const monthly = getMonthlyActivities(
     activities.activities,
@@ -38,12 +37,6 @@ export default function MonthlyKmGraph() {
     name: `S${i + 1}`,
     Km: km,
   }));
-
-  useEffect(() => {
-    const newStartDate = new Date(endDate);
-    newStartDate.setDate(endDate.getDate() - 28);
-    setStartDate(newStartDate);
-  }, [endDate]);
 
   return (
     <div className={styles.container}>

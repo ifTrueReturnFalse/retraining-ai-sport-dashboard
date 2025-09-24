@@ -1,7 +1,6 @@
 "use client";
 
 import { useActivities } from "@/app/context/ActivitiesContext";
-import { useState, useEffect } from "react";
 import DateArrowButtonsCombo from "@/app/ui/Buttons/DateArrowButtonsCombo";
 import { getSunday, isBetween, dayToString } from "@/app/lib/graph-utils";
 import {
@@ -16,11 +15,14 @@ import {
 } from "recharts";
 import CustomLegend from "./CustomLegend";
 import styles from "./WeeklyBPM.module.css";
+import { useDateRange } from "@/app/hooks/useDateRange";
 
 export default function WeeklyBPM() {
   const activities = useActivities();
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(getSunday(new Date()));
+  const { startDate, endDate, setEndDate } = useDateRange(
+    getSunday(new Date()),
+    6
+  );
 
   const weekActivities = activities.activities.filter((activity) => {
     const date = new Date(activity.date);
@@ -47,17 +49,11 @@ export default function WeeklyBPM() {
       weekActivities.length
   );
 
-  useEffect(() => {
-    const newStartDate = new Date(endDate);
-    newStartDate.setDate(endDate.getDate() - 6);
-    setStartDate(newStartDate);
-  }, [endDate]);
-
   return (
     <div className={styles.container}>
       <div className={styles.head}>
         <p className={styles.mean}>{`${isNaN(meanBpm) ? 0 : meanBpm} BPM`}</p>
-        
+
         <DateArrowButtonsCombo
           startDate={startDate}
           endDate={endDate}
@@ -71,7 +67,7 @@ export default function WeeklyBPM() {
       <ComposedChart width={505} height={310} data={chartData}>
         <CartesianGrid vertical={false} strokeDasharray="2 2" />
         <XAxis dataKey="name" tickLine={false} />
-        <YAxis tickLine={false} domain={['dataMin - 10', 'dataMax + 10']} />
+        <YAxis tickLine={false} domain={["dataMin - 10", "dataMax + 10"]} />
         <Tooltip />
         <Legend align="left" content={<CustomLegend />} />
         <Bar dataKey="Min" fill="#fcc1b6" barSize={14} radius={[7, 7, 7, 7]} />
