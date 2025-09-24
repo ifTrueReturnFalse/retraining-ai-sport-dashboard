@@ -1,6 +1,7 @@
 "use client";
 
 import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import CustomLegend from "./CustomLegend";
 import { useActivities } from "@/app/context/ActivitiesContext";
 import { useEffect, useState } from "react";
 import DateArrowButtonsCombo from "@/app/ui/Buttons/DateArrowButtonsCombo";
@@ -26,6 +27,7 @@ export default function MonthlyKmGraph() {
     week.forEach((activity) => {
       sumDistance[i] += activity.distance;
     });
+    sumDistance[i] = Math.round(sumDistance[i])
   }
 
   const meanKm = Math.floor(
@@ -34,7 +36,7 @@ export default function MonthlyKmGraph() {
 
   const chartData = sumDistance.map((km, i) => ({
     name: `S${i + 1}`,
-    km,
+    Km: km,
   }));
 
   useEffect(() => {
@@ -51,7 +53,7 @@ export default function MonthlyKmGraph() {
           startDate={startDate}
           endDate={endDate}
           onChangeEndDate={setEndDate}
-          daysToShift={28}
+          daysToShift={29}
         />
       </div>
       <p className={styles.legend}>Total des kilomètres des 4 dernières semaines</p>
@@ -61,8 +63,8 @@ export default function MonthlyKmGraph() {
         <Tooltip />
         <XAxis dataKey="name" tickLine={false}  />
         <YAxis tickLine={false} />
-        <Legend align="left" iconType="circle" />
-        <Bar dataKey="km" fill="#b6bdfc" barSize={14} radius={[7, 7, 7, 7]} />
+        <Legend align="left" content={<CustomLegend />} />
+        <Bar dataKey="Km" fill="#b6bdfc" barSize={14} radius={[7, 7, 7, 7]} />
       </BarChart>
     </div>
   );

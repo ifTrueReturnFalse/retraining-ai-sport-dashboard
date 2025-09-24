@@ -1,6 +1,8 @@
 import { ActivityType } from "./definitions";
 
-function isBetween(date: Date, start: Date, end: Date): boolean {
+export const dayToString = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+
+export function isBetween(date: Date, start: Date, end: Date): boolean {
   return date >= start && date <= end;
 }
 
@@ -36,4 +38,17 @@ export function splitByWeeks(
   }
 
   return result;
+}
+
+export function getSunday(date: Date): Date {
+  const sunday = new Date(date);
+
+  const day = sunday.getDay();
+
+  const diffToSunday = day === 0 ? 0 : 7 - day;
+
+  sunday.setDate(sunday.getDate() + diffToSunday);
+  sunday.setHours(23, 59, 59, 999);
+
+  return sunday;
 }

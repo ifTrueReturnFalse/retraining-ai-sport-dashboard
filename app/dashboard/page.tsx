@@ -8,7 +8,7 @@ export default function Page() {
     <div className={styles.dashboard}>
       <ChatbotHint />
       <UserAchievementHint className="mt-10" />
-      <GraphContainer />
+      <GraphContainer className="mt-15" />
     </div>
   );
 }

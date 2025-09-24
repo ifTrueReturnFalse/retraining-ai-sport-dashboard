@@ -31,7 +31,7 @@ export default function DateArrowButtonsCombo({
     <div className={styles.container}>
       <ArrowButton direction="left" onClick={handlePrev} />
       <p className={styles.dates}>
-        <span>{dateToShortString(startDate)} -</span> <span>{dateToShortString(endDate)}</span>
+        <span>{dateToShortString(startDate)} -&nbsp;</span> <span>{dateToShortString(endDate)}</span>
       </p>
       <ArrowButton direction="right" onClick={handleNext} />
     </div>
