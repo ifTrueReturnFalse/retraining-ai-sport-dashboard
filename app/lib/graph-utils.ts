@@ -52,3 +52,16 @@ export function getSunday(date: Date): Date {
 
   return sunday;
 }
+
+export function prepareTooltipLabel(baseDate: Date, weekIndex: number): string {
+  const startDate = new Date(baseDate);
+  startDate.setDate(startDate.getDate() + weekIndex * 7);
+  const endDate = new Date(baseDate);
+  endDate.setDate(endDate.getDate() + 6 + weekIndex * 7);
+
+  return `${startDate
+    .toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })
+    .replace("/", ".")} au ${endDate
+    .toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })
+    .replace("/", ".")}`;
+}
