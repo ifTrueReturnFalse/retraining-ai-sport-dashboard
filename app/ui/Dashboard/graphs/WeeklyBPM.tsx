@@ -12,7 +12,7 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
-import CustomLegend from "./chartElements/CustomLegend";
+import CustomLegend from "../chartElements/CustomLegend";
 import styles from "./WeeklyBPM.module.css";
 import { useDateRange } from "@/app/hooks/useDateRange";
 import { useState } from "react";

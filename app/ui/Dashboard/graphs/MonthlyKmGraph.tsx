@@ -9,13 +9,13 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import CustomLegend from "./chartElements/CustomLegend";
+import CustomLegend from "../chartElements/CustomLegend";
 import { useActivities } from "@/app/context/ActivitiesContext";
 import DateArrowButtonsCombo from "@/app/ui/Buttons/DateArrowButtonsCombo";
 import { getMonthlyActivities, splitByWeeks, prepareTooltipLabel } from "@/app/lib/graph-utils";
 import styles from "./MonthlyKmGraph.module.css";
 import { useDateRange } from "@/app/hooks/useDateRange";
-import CustomTooltip from "./chartElements/CustomTooltip";
+import CustomTooltip from "../chartElements/CustomTooltip";
 
 export default function MonthlyKmGraph() {
   const activities = useActivities();

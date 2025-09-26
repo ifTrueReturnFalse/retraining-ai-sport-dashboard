@@ -1,11 +1,15 @@
 .titre {
   font-size: 22px;
   font-weight: 500;
-  margin-bottom: 20px;
 }
 
 .graphRow {
   display: flex;
   flex-direction: row;
   gap: 20px;
+}
+
+.legend {
+  font-size: 16px;
+  color: #707070;
 }
