@@ -3,7 +3,7 @@
 import { useDateRange } from "@/app/hooks/useDateRange";
 import { useActivities } from "@/app/context/ActivitiesContext";
 import { PieChart, Pie, Cell } from "recharts";
-import { splitByWeeks } from "@/app/lib/graph-utils";
+import { getSunday, splitByWeeks } from "@/app/lib/graph-utils";
 import styles from "./GoalPie.module.css";
 
 interface LabelProps {
@@ -44,7 +44,7 @@ const renderCustomLabel = (props: unknown) => {
 };
 
 export default function ObjectifPie() {
-  const { startDate } = useDateRange(new Date(), 6);
+  const { startDate } = useDateRange(getSunday(new Date()), 6);
   const activities = useActivities().activities;
 
   const weekActivities = splitByWeeks(activities, startDate, 1)[0].length;

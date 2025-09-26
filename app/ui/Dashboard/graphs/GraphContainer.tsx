@@ -6,9 +6,10 @@ import MonthlyKmGraph from "./MonthlyKmGraph";
 import WeeklyBPM from "./WeeklyBPM";
 import GoalPie from "./GoalPie";
 import PerformanceContainer from "../PerformanceContainer";
+import { getSunday } from "@/app/lib/graph-utils";
 
 export default function GraphContainer({ className }: { className: string }) {
-  const { startDate, endDate } = useDateRange(new Date(), 6);
+  const { startDate, endDate } = useDateRange(getSunday(new Date()), 6);
   const formatedStartDate = startDate.toLocaleDateString("fr-FR");
   const formatedEndDate = endDate.toLocaleDateString("fr-FR");
 
@@ -21,7 +22,7 @@ export default function GraphContainer({ className }: { className: string }) {
       </div>
       <h3 className={styles.titre}>Cette semaine</h3>
       <p
-        className={styles.legend}
+        className={`${styles.legend} mb-[20]`}
       >{`Du ${formatedStartDate} au ${formatedEndDate}`}</p>
       <div className={styles.graphRow}>
         <GoalPie />
