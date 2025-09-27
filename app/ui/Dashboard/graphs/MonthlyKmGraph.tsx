@@ -19,7 +19,7 @@ import CustomTooltip from "../chartElements/CustomTooltip";
 
 export default function MonthlyKmGraph() {
   const activities = useActivities();
-  const { startDate, endDate, setEndDate } = useDateRange(new Date(), 27);
+  const { startDate, endDate, setEndDate } = useDateRange(new Date(), 28);
 
   const monthly = getMonthlyActivities(
     activities.activities,
@@ -56,7 +56,7 @@ export default function MonthlyKmGraph() {
           startDate={startDate}
           endDate={endDate}
           onChangeEndDate={setEndDate}
-          daysToShift={28}
+          daysToShift={29}
         />
       </div>
       <p className={styles.legend}>

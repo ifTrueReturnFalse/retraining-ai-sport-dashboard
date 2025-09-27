@@ -6,7 +6,7 @@ import { useDateRange } from "@/app/hooks/useDateRange";
 import { useActivities } from "@/app/context/ActivitiesContext";
 
 export default function PerformanceContainer() {
-  const { startDate, endDate } = useDateRange(getSunday(new Date()), 6);
+  const { startDate } = useDateRange(getSunday(new Date()), 6);
   const activities = useActivities().activities;
 
   const weekActivities = splitByWeeks(activities, startDate, 1)[0];
