@@ -1,4 +1,5 @@
 import styles from "./Buttons.module.css";
+import Image from "next/image";
 
 interface ButtonsProps {
   buttonText: string;
@@ -77,6 +78,24 @@ export function ArrowButton({
   return (
     <button onClick={onClick} className={`${styles.arrowButton} ${className}`}>
       {direction === "left" ? "<" : ">"}
+    </button>
+  );
+}
+
+interface SendButtonProps {
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
+}
+
+export function SendButton({ onClick, className }: SendButtonProps) {
+  return (
+    <button onClick={onClick} className={`${styles.sendButton} ${className}`}>
+      <Image
+        src="/up_arrow.svg"
+        alt="Send your prompt"
+        height={16}
+        width={11}
+      />
     </button>
   );
 }

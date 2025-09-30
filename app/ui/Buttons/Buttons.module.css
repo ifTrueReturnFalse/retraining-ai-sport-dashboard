@@ -31,3 +31,12 @@
   border: 1px solid var(--blue-primary);
   background-color: #5465f7;
 }
+
+.sendButton {
+  background-color: var(--blue-primary);
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+}

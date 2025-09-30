@@ -1,8 +1,12 @@
 import Image from "next/image";
 import { Button } from "@/app/ui/Buttons/Buttons";
-import styles from './ChatbotHint.module.css'
+import styles from "./ChatbotHint.module.css";
 
-export default function ChatbotHint() {
+export default function ChatbotHint({
+  onClick,
+}: {
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}) {
   return (
     <div className={styles.chatbotHint}>
       <Image
@@ -16,7 +20,11 @@ export default function ChatbotHint() {
         Posez vos questions sur votre programme, vos performances ou vos
         objectifs.
       </p>
-      <Button isSubmitButton={false} buttonText="Lancer une conversation" />
+      <Button
+        onClick={onClick}
+        isSubmitButton={false}
+        buttonText="Lancer une conversation"
+      />
     </div>
   );
 }
