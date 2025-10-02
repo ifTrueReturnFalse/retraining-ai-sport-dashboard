@@ -11,7 +11,7 @@ export default function ChatbotHint({
     <div className={styles.chatbotHint}>
       <Image
         src="/stars.svg"
-        alt="Nice little stars to feel the IA magic !"
+        alt="Nice little stars to feel the AI magic !"
         width={19}
         height={20.46}
         className="mr-5"

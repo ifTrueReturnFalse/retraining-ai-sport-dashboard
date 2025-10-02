@@ -149,3 +149,8 @@ export interface ActivitiesContextType {
   loading: boolean;
   refresh?: () => void;
 }
+
+export type Message = {
+  role: "system" | "user" | "assistant";
+  content: string;
+};

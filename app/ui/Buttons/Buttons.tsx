@@ -85,11 +85,16 @@ export function ArrowButton({
 interface SendButtonProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
+  disabled?: boolean;
 }
 
-export function SendButton({ onClick, className }: SendButtonProps) {
+export function SendButton({ onClick, className, disabled }: SendButtonProps) {
   return (
-    <button onClick={onClick} className={`${styles.sendButton} ${className}`}>
+    <button
+      onClick={onClick}
+      className={`${styles.sendButton} ${className}`}
+      disabled={disabled}
+    >
       <Image
         src="/up_arrow.svg"
         alt="Send your prompt"

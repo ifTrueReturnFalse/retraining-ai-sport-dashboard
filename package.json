@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@mistralai/mistralai": "^1.10.0",
     "clsx": "^2.1.1",
     "next": "15.5.2",
     "next-auth": "^4.24.11",
