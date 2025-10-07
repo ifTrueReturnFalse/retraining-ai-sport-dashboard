@@ -1,9 +1,12 @@
-import React, { RefObject, useState } from "react";
-import Image from "next/image";
+import React, { RefObject } from "react";
 import styles from "./ChatModal.module.css";
-import { SendButton } from "@/app/ui/Buttons/Buttons";
 import { useConversationManager } from "@/app/hooks/useConversationManager";
 import { useMistralAPI } from "@/app/hooks/useMistralAPI";
+import ChatCloseButton from "./chatBotElements/ChatCloseButton";
+import ChatHint from "./chatBotElements/ChatHint";
+import ChatInput from "./chatBotElements/ChatInput";
+import ChatAssistantMessage from "./chatBotElements/ChatAssistantMessage";
+import ChatUserMessage from "./chatBotElements/ChatUserMessage";
 
 export default function ChatbotModal({
   dialogRef,
@@ -12,19 +15,20 @@ export default function ChatbotModal({
 }) {
   const { allMessages, addUserMessage, addAssistantMessage, getContext } =
     useConversationManager(
-      "Tu es un champion de l'humour, soit créatif",
+      "Tu es un coach sportif, ton objectif est de guider au mieux l'utilisateur\
+      afin qu'il puisse accomplir ses objectifs personnels.\
+      Tu peux guider s'il y a un problème médical, mais tu dois obligatoirement rediriger vers une personnne compétente\
+      comme un médecin. Ne fais cette proposition uniquement si un conseil médical est demandé.\
+      Soit relativement bref dans les explications.\
+      En cas de question en dehors du domaine du sport, redirige l'utilisateur vers d'autres services.\
+      Tu dois répondre de manière positive et bienveillante.",
       5
     );
-  const { isLoading, sendMessage } = useMistralAPI(getContext);
-  const [message, setMessage] = useState("");
+  const { sendMessage } = useMistralAPI();
 
-  const handleSendMessageToAPI = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
+  const sendMessageToAPI = async (message: string) => {
     addUserMessage(message);
-    setMessage("");
-    const response = await sendMessage();
+    const response = await sendMessage(getContext);
     if (response?.error) {
       console.error(response.error);
     } else {
@@ -35,50 +39,23 @@ export default function ChatbotModal({
   return (
     <dialog ref={dialogRef} className={styles.dialog}>
       <div className={styles.container}>
-        <button
-          onClick={() => dialogRef.current?.close()}
-          className={styles.close}
-        >
-          Fermer X
-        </button>
+        <ChatCloseButton dialogRef={dialogRef} />
 
-        {allMessages.length === 0 && (
-          <div className={styles.hint}>
-            Posez vos questions sur votre programme,
-            <br />
-            vos performances ou vos objectifs
-          </div>
-        )}
+        {allMessages.length === 0 && <ChatHint />}
 
         {allMessages.length !== 0 && (
           <div className={styles.conversation}>
-            {allMessages.map((message) => (
-              <div key={message.content}>{message.content}</div>
-            ))}
+            {allMessages.map((message, index) =>
+              message.role === "assistant" ? (
+                <ChatAssistantMessage key={index} content={message.content} />
+              ) : (
+                <ChatUserMessage key={index} content={message.content} />
+              )
+            )}
           </div>
         )}
 
-        <form
-          className={styles.textInputContainer}
-          onSubmit={(e) => handleSendMessageToAPI(e)}
-        >
-          <Image
-            src="/red_stars.svg"
-            alt="Red shining stars of AI"
-            width={20}
-            height={20}
-            className={styles.starsImg}
-          />
-          <input
-            placeholder="Comment puis-je vous aider ?"
-            className={styles.textInput}
-            autoFocus={true}
-            disabled={isLoading}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <SendButton className={styles.sendButton} disabled={isLoading} />
-        </form>
+        <ChatInput sendMessageToAPI={sendMessageToAPI} />
       </div>
     </dialog>
   );

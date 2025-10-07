@@ -1,0 +1,30 @@
+.messageContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.message {
+  font-size: 14px;
+  font-weight: 400;
+  max-width: 600px;
+  padding: 10px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  display: inline-block;
+}
+
+.userMessage {
+  background-color: #fcc1b680;
+  border-bottom-left-radius: 20px;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.picture {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  margin-top: auto;
+}

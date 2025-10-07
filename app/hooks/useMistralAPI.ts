@@ -1,10 +1,10 @@
 import { Message } from "@/app/lib/definitions";
 import { useState } from "react";
 
-export function useMistralAPI(getContext: () => Message[]) {
+export function useMistralAPI() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const sendMessage = async () => {
+  const sendMessage = async (getContext: () => Message[]) => {
     setIsLoading(true);
 
     const response = await fetch("/api/mistral", {

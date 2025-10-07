@@ -30,7 +30,7 @@ import styles from "./UiCSS/Common.module.css";
 export default function NavBar() {
   const links = [
     { name: "Dashboard", href: "/dashboard" },
-    { name: "Coach AI", href: "/dashboard" },
+    { name: "Coach AI", href: "/coach" },
     { name: "Mon profil", href: "/profile" },
   ];
 

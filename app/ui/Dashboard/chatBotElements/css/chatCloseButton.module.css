@@ -1,0 +1,9 @@
+.close {
+  color: #707070;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: 20px;
+}
