@@ -1,16 +1,15 @@
 import { useState } from "react";
 import styles from "./css/ChatInput.module.css";
 import Image from "next/image";
-import { useMistralAPI } from "@/app/hooks/useMistralAPI";
 import { SendButton } from "../../Buttons/Buttons";
 
 interface ChatInputProps {
   sendMessageToAPI: (message: string) => void;
+  isLoading: boolean
 }
 
-export default function ChatInput({ sendMessageToAPI }: ChatInputProps) {
+export default function ChatInput({ sendMessageToAPI, isLoading }: ChatInputProps) {
   const [message, setMessage] = useState("");
-  const { isLoading } = useMistralAPI();
 
   const handleFormValidation = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

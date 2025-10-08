@@ -1,4 +1,4 @@
-import React, { RefObject } from "react";
+import React, { RefObject, useEffect, useRef } from "react";
 import styles from "./ChatModal.module.css";
 import { useConversationManager } from "@/app/hooks/useConversationManager";
 import { useMistralAPI } from "@/app/hooks/useMistralAPI";
@@ -7,6 +7,8 @@ import ChatHint from "./chatBotElements/ChatHint";
 import ChatInput from "./chatBotElements/ChatInput";
 import ChatAssistantMessage from "./chatBotElements/ChatAssistantMessage";
 import ChatUserMessage from "./chatBotElements/ChatUserMessage";
+import { Message } from "@/app/lib/definitions";
+import ChatLoader from "./chatBotElements/ChatLoader";
 
 export default function ChatbotModal({
   dialogRef,
@@ -24,17 +26,28 @@ export default function ChatbotModal({
       Tu dois répondre de manière positive et bienveillante.",
       5
     );
-  const { sendMessage } = useMistralAPI();
+  const { sendMessage, isLoading } = useMistralAPI();
+  const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const sendMessageToAPI = async (message: string) => {
     addUserMessage(message);
-    const response = await sendMessage(getContext);
+
+    const recentMessages: Message[] = [
+      ...getContext(),
+      { role: "user", content: message },
+    ];
+
+    const response = await sendMessage(recentMessages);
     if (response?.error) {
       console.error(response.error);
     } else {
       addAssistantMessage(response.message);
     }
   };
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  });
 
   return (
     <dialog ref={dialogRef} className={styles.dialog}>
@@ -44,7 +57,7 @@ export default function ChatbotModal({
         {allMessages.length === 0 && <ChatHint />}
 
         {allMessages.length !== 0 && (
-          <div className={styles.conversation}>
+          <div className={styles.conversation} ref={bottomRef}>
             {allMessages.map((message, index) =>
               message.role === "assistant" ? (
                 <ChatAssistantMessage key={index} content={message.content} />
@@ -52,10 +65,11 @@ export default function ChatbotModal({
                 <ChatUserMessage key={index} content={message.content} />
               )
             )}
+            {isLoading && <ChatLoader />}
           </div>
         )}
 
-        <ChatInput sendMessageToAPI={sendMessageToAPI} />
+        <ChatInput sendMessageToAPI={sendMessageToAPI} isLoading={isLoading} />
       </div>
     </dialog>
   );

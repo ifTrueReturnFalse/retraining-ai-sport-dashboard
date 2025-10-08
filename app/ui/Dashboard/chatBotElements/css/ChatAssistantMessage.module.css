@@ -5,7 +5,6 @@
 }
 
 .messageColumn {
-  margin-top: 40px;
   width: 100%;
 }
 
@@ -23,17 +22,6 @@
   background-color: #e7e7e7;
   border-bottom-right-radius: 20px;
   margin-left: 10px;
-}
-
-.AIPictureContainer {
-  background-color: #f4320b;
-  border-radius: 50%;
-  height: 32px;
-  width: 32px;
-  margin-top: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .coach {

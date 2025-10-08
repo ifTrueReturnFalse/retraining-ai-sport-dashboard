@@ -4,12 +4,12 @@ import { useState } from "react";
 export function useMistralAPI() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const sendMessage = async (getContext: () => Message[]) => {
+  const sendMessage = async (context: Message[]) => {
     setIsLoading(true);
 
     const response = await fetch("/api/mistral", {
       method: "POST",
-      body: JSON.stringify({ messages: getContext() }),
+      body: JSON.stringify({ messages: context }),
       headers: { "Content-Type": "application/json" },
     });
 

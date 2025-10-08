@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-right: auto;
+  align-items: flex-end;
+}
+
+.animationContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.ball {
+  border-radius: 50%;
+  background-color: #fcc1b6;
+  width: 8px;
+  height: 8px;
+  animation: 1s infinite alternate bounceUp ease-in-out;
+}
+
+.ball1 {
+  animation-delay: 0.1s;
+}
+
+.ball2 {
+  animation-delay: 0.3s;
+}
+
+.ball3 {
+  animation-delay: 0.5s;
+}
+
+.ball4 {
+  animation-delay: 0.7s;
+}
+
+@keyframes bounceUp {
+  from {
+    transform: translateY(0px);
+  }
+
+  to {
+    transform: translateY(-10px);
+  }
+}

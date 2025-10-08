@@ -1,6 +1,6 @@
 import styles from "./css/ChatAssistantMessage.module.css";
-import Image from "next/image";
 import Markdown from "react-markdown";
+import ChatAIPicture from "./ChatAIPicture";
 
 interface ChatAssistantMessageProps {
   key: number;
@@ -12,14 +12,7 @@ export default function ChatAssistantMessage({
 }: ChatAssistantMessageProps) {
   return (
     <div className={styles.messageContainer}>
-      <div className={styles.AIPictureContainer}>
-        <Image
-          src="/red_stars.svg"
-          alt="Your AI assistant"
-          height={17.19}
-          width={15.96}
-        />
-      </div>
+      <ChatAIPicture />
 
       <div className={styles.messageColumn}>
         <div className={styles.coach}>Coach IA</div>
