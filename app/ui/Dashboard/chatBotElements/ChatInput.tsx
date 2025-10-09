@@ -5,23 +5,30 @@ import { SendButton } from "../../Buttons/Buttons";
 
 interface ChatInputProps {
   sendMessageToAPI: (message: string) => void;
-  isLoading: boolean
+  isLoading: boolean;
 }
 
-export default function ChatInput({ sendMessageToAPI, isLoading }: ChatInputProps) {
+export default function ChatInput({
+  sendMessageToAPI,
+  isLoading,
+}: ChatInputProps) {
   const [message, setMessage] = useState("");
 
   const handleFormValidation = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sendMessageToAPI(message);
-    setMessage("");
+    if (message.trim()) {
+      sendMessageToAPI(message);
+      setMessage("");
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      sendMessageToAPI(message);
-      setMessage("");
+      if (message.trim()) {
+        sendMessageToAPI(message);
+        setMessage("");
+      }
     }
   };
 
@@ -46,7 +53,10 @@ export default function ChatInput({ sendMessageToAPI, isLoading }: ChatInputProp
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      <SendButton className={styles.sendButton} disabled={isLoading} />
+      <SendButton
+        className={styles.sendButton}
+        disabled={isLoading || !message.trim()}
+      />
     </form>
   );
 }
