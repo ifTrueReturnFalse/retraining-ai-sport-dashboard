@@ -6,11 +6,13 @@ import { SendButton } from "../../Buttons/Buttons";
 interface ChatInputProps {
   sendMessageToAPI: (message: string) => void;
   isLoading: boolean;
+  allTokensUsed: boolean;
 }
 
 export default function ChatInput({
   sendMessageToAPI,
   isLoading,
+  allTokensUsed,
 }: ChatInputProps) {
   const [message, setMessage] = useState("");
 
@@ -48,14 +50,14 @@ export default function ChatInput({
         placeholder="Comment puis-je vous aider ?"
         className={styles.textInput}
         autoFocus={true}
-        disabled={isLoading}
+        disabled={isLoading || allTokensUsed}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}
       />
       <SendButton
         className={styles.sendButton}
-        disabled={isLoading || !message.trim()}
+        disabled={isLoading || !message.trim() || allTokensUsed}
       />
     </form>
   );

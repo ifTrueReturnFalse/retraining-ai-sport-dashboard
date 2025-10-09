@@ -39,8 +39,9 @@ export async function POST(req: NextRequest) {
       messages,
       maxTokens: 1000,
     });
-
+    
     const content = apiResponse.choices?.[0]?.message?.content;
+    const tokensUsed = apiResponse.usage?.totalTokens
 
     if (!content) {
       throw new Error("No content in Mistral response");
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       message: content,
+      tokensUsed
     });
   } catch (error) {
     console.error("Chat API error :", error);

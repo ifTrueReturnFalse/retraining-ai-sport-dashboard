@@ -1,4 +1,11 @@
-import React, { RefObject, useEffect, useRef } from "react";
+import React, {
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import styles from "./ChatModal.module.css";
 import { useConversationManager } from "@/app/hooks/useConversationManager";
 import { useMistralAPI } from "@/app/hooks/useMistralAPI";
@@ -10,6 +17,8 @@ import ChatUserMessage from "./chatBotElements/ChatUserMessage";
 import { Message } from "@/app/lib/definitions";
 import ChatLoader from "./chatBotElements/ChatLoader";
 import { useActivities } from "@/app/context/ActivitiesContext";
+import { useTokenManager } from "@/app/hooks/useTokenManager";
+import ChatAllTokensUsed from "./chatBotElements/ChatAllTokensUsed";
 
 export default function ChatbotModal({
   dialogRef,
@@ -19,8 +28,9 @@ export default function ChatbotModal({
   const { activities } = useActivities();
   const maxActivitiesToSend = 5;
   const activitiesToSend = activities.slice(-maxActivitiesToSend);
-  
-  const systemPrompt = `Tu es un coach sportif expert et bienveillant, spécialisé dans la course à pied,
+
+  const systemPrompt = useMemo(
+    () => `Tu es un coach sportif expert et bienveillant, spécialisé dans la course à pied,
    la nutrition sportive et la récupération. Ton nom est John Deuf.
 
 **Mission Principale :**
@@ -83,28 +93,42 @@ Bien se nourrir avant une course est crucial pour...".
     Tu devras adapter tes réponses en fonction de ces données
     \`\`\`JSON
     ${JSON.stringify(activitiesToSend)}
-    \`\`\``;
+    \`\`\``,
+    [activitiesToSend]
+  );
 
   const { allMessages, addUserMessage, addAssistantMessage, getContext } =
     useConversationManager(systemPrompt, 6);
   const { sendMessage, isLoading } = useMistralAPI();
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const { addTokens, allTokensUsed } = useTokenManager(10000);
+  const [areAllTokensUsed, setAreAllTokensUsed] = useState(false);
 
-  const sendMessageToAPI = async (message: string) => {
-    addUserMessage(message);
+  useEffect(() => {
+    setAreAllTokensUsed(allTokensUsed());
+  }, [allTokensUsed]);
 
-    const recentMessages: Message[] = [
-      ...getContext(),
-      { role: "user", content: message },
-    ];
+  const hoursUntilReset = 6;
 
-    const response = await sendMessage(recentMessages);
-    if (response?.error) {
-      console.error(response.error);
-    } else {
-      addAssistantMessage(response.message);
-    }
-  };
+  const sendMessageToAPI = useCallback(
+    async (message: string) => {
+      addUserMessage(message);
+
+      const recentMessages: Message[] = [
+        ...getContext(),
+        { role: "user", content: message },
+      ];
+
+      const response = await sendMessage(recentMessages);
+      if (response?.error) {
+        console.error(response.error);
+      } else {
+        addAssistantMessage(response.message);
+        addTokens(response.tokensUsed, hoursUntilReset);
+      }
+    },
+    [addAssistantMessage, addTokens, addUserMessage, getContext, sendMessage]
+  );
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -129,7 +153,13 @@ Bien se nourrir avant une course est crucial pour...".
           <div ref={bottomRef} />
         </div>
 
-        <ChatInput sendMessageToAPI={sendMessageToAPI} isLoading={isLoading} />
+        {areAllTokensUsed && <ChatAllTokensUsed />}
+
+        <ChatInput
+          sendMessageToAPI={sendMessageToAPI}
+          isLoading={isLoading}
+          allTokensUsed={areAllTokensUsed}
+        />
       </div>
     </dialog>
   );
