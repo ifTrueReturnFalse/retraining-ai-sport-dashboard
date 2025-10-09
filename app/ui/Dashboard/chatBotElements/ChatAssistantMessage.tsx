@@ -1,6 +1,7 @@
 import styles from "./css/ChatAssistantMessage.module.css";
 import Markdown from "react-markdown";
 import ChatAIPicture from "./ChatAIPicture";
+import remarkGfm from "remark-gfm";
 
 interface ChatAssistantMessageProps {
   key: number;
@@ -18,7 +19,7 @@ export default function ChatAssistantMessage({
         <div className={styles.coach}>Coach IA</div>
 
         <div className={`${styles.message} ${styles.assistantMessage}`}>
-          <Markdown>{content}</Markdown>
+          <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
         </div>
       </div>
     </div>

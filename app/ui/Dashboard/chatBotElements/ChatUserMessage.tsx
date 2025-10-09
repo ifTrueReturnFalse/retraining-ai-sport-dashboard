@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Markdown from "react-markdown";
+
 import styles from "./css/ChatUserMessage.module.css";
 import { useUser } from "@/app/context/UserContext";
 
