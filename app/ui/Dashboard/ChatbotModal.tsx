@@ -47,27 +47,26 @@ export default function ChatbotModal({
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  });
+  }, [allMessages, isLoading]);
 
   return (
     <dialog ref={dialogRef} className={styles.dialog}>
       <div className={styles.container}>
         <ChatCloseButton dialogRef={dialogRef} />
 
-        {allMessages.length === 0 && <ChatHint />}
-
-        {allMessages.length !== 0 && (
-          <div className={styles.conversation} ref={bottomRef}>
-            {allMessages.map((message, index) =>
+        <div className={styles.conversation}>
+          {allMessages.length === 0 && <ChatHint />}
+          {allMessages.length > 0 &&
+            allMessages.map((message, index) =>
               message.role === "assistant" ? (
                 <ChatAssistantMessage key={index} content={message.content} />
               ) : (
                 <ChatUserMessage key={index} content={message.content} />
               )
             )}
-            {isLoading && <ChatLoader />}
-          </div>
-        )}
+          {isLoading && <ChatLoader />}
+          <div ref={bottomRef} />
+        </div>
 
         <ChatInput sendMessageToAPI={sendMessageToAPI} isLoading={isLoading} />
       </div>
