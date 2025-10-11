@@ -11,7 +11,7 @@ import { useConversationManager } from "@/app/hooks/useConversationManager";
 import { useMistralAPI } from "@/app/hooks/useMistralAPI";
 import ChatCloseButton from "./chatBotElements/ChatCloseButton";
 import ChatHint from "./chatBotElements/ChatHint";
-import ChatInput from "./chatBotElements/ChatInput";
+import ChatInputContainer from "./chatBotElements/ChatInputContainer";
 import ChatAssistantMessage from "./chatBotElements/ChatAssistantMessage";
 import ChatUserMessage from "./chatBotElements/ChatUserMessage";
 import { Message } from "@/app/lib/definitions";
@@ -35,7 +35,7 @@ export default function ChatbotModal({
 }) {
   const { profile } = useUser();
   const necessaryInformations = useMemo(
-    // Memoize user's personal information to be sent to the AI.
+    // Memoizes user's personal information to be sent to the AI.
     () => ({
       age: profile?.age,
       weight: profile?.weight,
@@ -44,11 +44,12 @@ export default function ChatbotModal({
     [profile]
   );
 
-  const { activities } = useActivities();
-  const maxActivitiesToSend = 10; // Limit the number of activities sent to the AI.
-  const activitiesToSend = activities.slice(-maxActivitiesToSend); // Get the most recent activities.
+  const { activities } = useActivities(); // Retrieves user activities from context.
+  const maxActivitiesToSend = 10; // Defines the maximum number of recent activities to send to the AI.
+  const activitiesToSend = activities.slice(-maxActivitiesToSend); // Gets the `maxActivitiesToSend` most recent activities.
 
   const systemPrompt = useMemo(
+    // Memoizes the system prompt to prevent unnecessary re-renders.
     // Memoize the system prompt to avoid unnecessary re-renders.
     // This prompt defines the AI's persona, rules, and context.
     () => `Tu es un coach sportif expert et bienveillant, spécialisé dans la course à pied,
@@ -126,18 +127,18 @@ Bien se nourrir avant une course est crucial pour...".
     [activitiesToSend, necessaryInformations]
   );
 
-  // Initialize conversation manager with the system prompt and a context limit.
+  // Initializes conversation manager with the system prompt and a context limit of 6 messages.
   const { allMessages, addUserMessage, addAssistantMessage, getContext } =
     useConversationManager(systemPrompt, 6);
-  // Hook to interact with the Mistral AI API.
-  const { sendMessage, isLoading } = useMistralAPI();
-  const bottomRef = useRef<HTMLDivElement | null>(null); // Ref for auto-scrolling to the bottom of the chat.
-  const { addTokens, allTokensUsed } = useTokenManager(10000); // Manage AI token usage with a limit of 10000.
-  const [areAllTokensUsed, setAreAllTokensUsed] = useState(false); // State to track if all tokens are used.
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // State for displaying API error messages.
+  const { sendMessage, isLoading } = useMistralAPI(); // Hook to interact with the Mistral AI API.
+  const bottomRef = useRef<HTMLDivElement | null>(null); // Ref for auto-scrolling to the bottom of the chat conversation.
+  const { addTokens, allTokensUsed } = useTokenManager(10000); // Manages AI token usage with a limit of 10000 tokens.
+  const [areAllTokensUsed, setAreAllTokensUsed] = useState(false); // State to track if the user has exhausted their AI token limit.
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // State for displaying any API error messages.
 
   useEffect(() => {
-    // Update token usage status when the `allTokensUsed` function changes.
+    // Updates token usage status when the `allTokensUsed` function changes.
+    // This ensures the `ChatAllTokensUsed` component's visibility is correctly managed.
     setAreAllTokensUsed(allTokensUsed());
   }, [allTokensUsed]);
 
@@ -145,18 +146,20 @@ Bien se nourrir avant une course est crucial pour...".
 
   /**
    * Handles sending a user message to the AI API.
-   * @param {string} message - The user's message.
+   * It clears any previous error messages, adds the user's message to the conversation,
+   * constructs the message payload with context, sends it to the API, and processes the response.
+   * @param {string} message - The content of the user's message.
    */
   const sendMessageToAPI = useCallback(
     async (message: string) => {
-      setErrorMessage(null);
-      addUserMessage(message);
+      setErrorMessage(null); // Clears any existing error message.
+      addUserMessage(message); // Adds the user's message to the conversation history.
 
       const recentMessages: Message[] = [
-        ...getContext(),
+        ...getContext(), // Retrieves recent messages to provide context to the AI.
         { role: "user", content: message },
       ];
-
+      // Sends the message to the Mistral API.
       const response = await sendMessage(recentMessages);
       if (response?.error) {
         setErrorMessage(response.error);
@@ -170,9 +173,10 @@ Bien se nourrir avant une course est crucial pour...".
 
   /**
    * Retries sending the last message to the AI API in case of an error.
+   * It re-sends the current conversation context to the API.
    */
   const retrySendMessage = useCallback(async () => {
-    setErrorMessage(null);
+    setErrorMessage(null); // Clears any existing error message before retrying.
     const response = await sendMessage(getContext());
 
     if (response?.error) {
@@ -184,7 +188,7 @@ Bien se nourrir avant une course est crucial pour...".
   }, [addAssistantMessage, addTokens, getContext, sendMessage]);
 
   useEffect(() => {
-    // Scroll to the bottom of the conversation whenever messages or loading state changes.
+    // Scrolls to the bottom of the conversation whenever `allMessages` or `isLoading` state changes.
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [allMessages, isLoading]);
 
@@ -192,8 +196,9 @@ Bien se nourrir avant une course est crucial pour...".
     <dialog ref={dialogRef} className={styles.dialog}>
       <div className={styles.container}>
         <ChatCloseButton dialogRef={dialogRef} />
-
         <div className={styles.conversation}>
+          {" "}
+          {/* Container for displaying chat messages. */}
           {allMessages.length === 0 && <ChatHint />}
           {allMessages.length > 0 &&
             allMessages.map((message, index) =>
@@ -203,23 +208,24 @@ Bien se nourrir avant une course est crucial pour...".
                 <ChatUserMessage key={index} content={message.content} />
               )
             )}
-          {isLoading && <ChatLoader />}
-          <div ref={bottomRef} />
+          {isLoading && <ChatLoader />}{" "}
+          {/* Displays a loader when the AI is processing. */}
+          <div ref={bottomRef} />{" "}
+          {/* Invisible div used for auto-scrolling to the bottom. */}
         </div>
-
-        {errorMessage !== null && (
+        {errorMessage !== null && ( // Conditionally renders an error message if `errorMessage` is not null.
           <ChatErrorMessage
             errorMessage={errorMessage}
             retryFunction={() => retrySendMessage()}
           />
         )}
-
-        {areAllTokensUsed && <ChatAllTokensUsed />}
-
-        <ChatInput
+        {areAllTokensUsed && <ChatAllTokensUsed />}{" "}
+        {/* Conditionally renders a message when all tokens are used. */}
+        {/* Input container for user messages and message presets. */}
+        <ChatInputContainer
           sendMessageToAPI={sendMessageToAPI}
           isLoading={isLoading}
-          allTokensUsed={areAllTokensUsed}
+          allTokensUsed={allTokensUsed()}
         />
       </div>
     </dialog>

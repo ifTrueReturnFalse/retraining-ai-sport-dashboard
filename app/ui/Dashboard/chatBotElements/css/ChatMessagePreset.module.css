@@ -1,0 +1,11 @@
+.preset {
+  background-color: #f2f3ff;
+  color: #707070;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 8px;
+  width: 260px;
+  height: 100%;
+  padding: 15px 10px;
+  cursor: pointer;
+}

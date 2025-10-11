@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styles from "./css/ChatInput.module.css";
 import Image from "next/image";
 import { SendButton } from "../../Buttons/Buttons";
@@ -17,6 +16,9 @@ interface ChatInputProps {
    * Indicates whether the user has exhausted their AI token limit.
    */
   allTokensUsed: boolean;
+
+  message: string;
+  setMessage: (value: string) => void;
 }
 
 /**
@@ -29,9 +31,9 @@ export default function ChatInput({
   sendMessageToAPI,
   isLoading,
   allTokensUsed,
+  message,
+  setMessage,
 }: ChatInputProps) {
-  const [message, setMessage] = useState("");
-
   /**
    * Handles the form submission event.
    * Prevents default form submission, sends the message if not empty, and clears the input.
@@ -40,6 +42,7 @@ export default function ChatInput({
   const handleFormValidation = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent page reload on form submission.
     if (message.trim()) {
+      // Check if the message is not empty or just whitespace.
       sendMessageToAPI(message);
       setMessage("");
     }
@@ -48,9 +51,7 @@ export default function ChatInput({
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // If Enter is pressed without Shift, prevent default and send the message.
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault(); // Prevent new line in textarea.
-      // Send message if it's not empty after trimming whitespace.
-      // Then clear the input field.
+      e.preventDefault(); // Prevent a new line from being added in the textarea.
       if (message.trim()) {
         sendMessageToAPI(message);
         setMessage("");
@@ -67,15 +68,17 @@ export default function ChatInput({
         height={20}
         className={styles.starsImg}
       />
-      <textarea
+
+      <textarea // The main input field for the user's message.
         placeholder="Comment puis-je vous aider ?"
         className={styles.textInput}
         autoFocus={true}
         disabled={isLoading || allTokensUsed} // Disable input if loading or tokens are used.
-        value={message} // Controlled component: input value is `message` state.
-        onChange={(e) => setMessage(e.target.value)} // Update state on input change.
+        value={message} // The current value of the textarea, controlled by the `message` prop.
+        onChange={(e) => setMessage(e.target.value)} // Updates the `message` state in the parent component.
         onKeyDown={handleKeyDown}
       />
+      
       <SendButton
         className={styles.sendButton}
         disabled={isLoading || !message.trim() || allTokensUsed}
