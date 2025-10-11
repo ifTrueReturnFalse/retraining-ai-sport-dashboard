@@ -1,0 +1,20 @@
+.container {
+  background-color: #ff5b5b;
+  border-radius: 10px;
+  padding: 10px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.retryButton {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  color: white;
+  background-color: #ac1f1f;
+  border-radius: 10px;
+  padding: 5px;
+  cursor: pointer;
+}

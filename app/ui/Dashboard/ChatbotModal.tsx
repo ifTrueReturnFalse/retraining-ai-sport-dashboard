@@ -16,17 +16,29 @@ import ChatAssistantMessage from "./chatBotElements/ChatAssistantMessage";
 import ChatUserMessage from "./chatBotElements/ChatUserMessage";
 import { Message } from "@/app/lib/definitions";
 import ChatLoader from "./chatBotElements/ChatLoader";
+import { useUser } from "@/app/context/UserContext";
 import { useActivities } from "@/app/context/ActivitiesContext";
 import { useTokenManager } from "@/app/hooks/useTokenManager";
 import ChatAllTokensUsed from "./chatBotElements/ChatAllTokensUsed";
+import ChatErrorMessage from "./chatBotElements/ChatErrorMessage";
 
 export default function ChatbotModal({
   dialogRef,
 }: {
   dialogRef: RefObject<HTMLDialogElement | null>;
 }) {
+  const { profile } = useUser();
+  const necessaryInformations = useMemo(
+    () => ({
+      age: profile?.age,
+      weight: profile?.weight,
+      height: profile?.height,
+    }),
+    [profile]
+  );
+
   const { activities } = useActivities();
-  const maxActivitiesToSend = 5;
+  const maxActivitiesToSend = 10;
   const activitiesToSend = activities.slice(-maxActivitiesToSend);
 
   const systemPrompt = useMemo(
@@ -89,12 +101,20 @@ Bien se nourrir avant une course est crucial pour...".
     Suggère des types d'entraînements spécifiques (fractionné, sorties longues) pour y parvenir.
     
     **Données de courses de l'utilisateur**
-    Voici au maximum les 5 dernières courses de l'utilisateur au format JSON.
+    Voici au maximum les 10 dernières courses de l'utilisateur au format JSON.
     Tu devras adapter tes réponses en fonction de ces données
     \`\`\`JSON
     ${JSON.stringify(activitiesToSend)}
-    \`\`\``,
-    [activitiesToSend]
+    \`\`\`
+    
+    **Données personnelles de l'utilisateur**
+    Voici les données personnelles de l'utilsateur qui peuvent t'aider à affiner tes réponses.
+    Gère ces données avec beaucoup de prudence.
+    \`\`\`JSON
+    ${JSON.stringify(necessaryInformations)}
+    \`\`\`
+    `,
+    [activitiesToSend, necessaryInformations]
   );
 
   const { allMessages, addUserMessage, addAssistantMessage, getContext } =
@@ -103,6 +123,7 @@ Bien se nourrir avant une course est crucial pour...".
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const { addTokens, allTokensUsed } = useTokenManager(10000);
   const [areAllTokensUsed, setAreAllTokensUsed] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setAreAllTokensUsed(allTokensUsed());
@@ -112,6 +133,7 @@ Bien se nourrir avant une course est crucial pour...".
 
   const sendMessageToAPI = useCallback(
     async (message: string) => {
+      setErrorMessage(null);
       addUserMessage(message);
 
       const recentMessages: Message[] = [
@@ -121,7 +143,7 @@ Bien se nourrir avant une course est crucial pour...".
 
       const response = await sendMessage(recentMessages);
       if (response?.error) {
-        console.error(response.error);
+        setErrorMessage(response.error);
       } else {
         addAssistantMessage(response.message);
         addTokens(response.tokensUsed, hoursUntilReset);
@@ -129,6 +151,18 @@ Bien se nourrir avant une course est crucial pour...".
     },
     [addAssistantMessage, addTokens, addUserMessage, getContext, sendMessage]
   );
+
+  const retrySendMessage = useCallback(async () => {
+    setErrorMessage(null);
+    const response = await sendMessage(getContext());
+
+    if (response?.error) {
+      setErrorMessage(response.error);
+    } else {
+      addAssistantMessage(response.message);
+      addTokens(response.tokensUsed, hoursUntilReset);
+    }
+  }, [addAssistantMessage, addTokens, getContext, sendMessage]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -152,6 +186,13 @@ Bien se nourrir avant une course est crucial pour...".
           {isLoading && <ChatLoader />}
           <div ref={bottomRef} />
         </div>
+
+        {errorMessage !== null && (
+          <ChatErrorMessage
+            errorMessage={errorMessage}
+            retryFunction={() => retrySendMessage()}
+          />
+        )}
 
         {areAllTokensUsed && <ChatAllTokensUsed />}
 
