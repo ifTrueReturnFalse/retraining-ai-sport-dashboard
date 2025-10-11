@@ -137,9 +137,20 @@ export function countChillDays(
   return chillDays;
 }
 
+/**
+ * Formats a given `Date` object into a short string representation like "DD Month".
+ *
+ * @param date - The `Date` object to format.
+ * @returns A string in the format "DD Month" (e.g., "20 septembre").
+ *
+ * @example
+ * ```ts
+ * dateToShortString(new Date("2025-09-20")) // Returns "20 septembre"
+ * ```
+ */
 export function dateToShortString(date: Date) {
-  const day = date.getDate()
-  const month = monthToString[date.getMonth()]
+  const day = date.getDate();
+  const month = monthToString[date.getMonth()];
 
-  return `${day} ${month}`
+  return `${day} ${month}`;
 }

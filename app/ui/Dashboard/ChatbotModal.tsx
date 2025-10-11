@@ -1,4 +1,4 @@
-import React, {
+import {
   RefObject,
   useCallback,
   useEffect,
@@ -22,6 +22,12 @@ import { useTokenManager } from "@/app/hooks/useTokenManager";
 import ChatAllTokensUsed from "./chatBotElements/ChatAllTokensUsed";
 import ChatErrorMessage from "./chatBotElements/ChatErrorMessage";
 
+/**
+ * `ChatbotModal` is a React functional component that renders a modal dialog for the AI chatbot.
+ * It manages the conversation flow, displays messages, handles user input, and interacts with the Mistral API.
+ * @param {Object} props - The properties for the component.
+ * @param {RefObject<HTMLDialogElement | null>} props.dialogRef - A ref to the HTML `<dialog>` element for controlling its visibility.
+ */
 export default function ChatbotModal({
   dialogRef,
 }: {
@@ -29,6 +35,7 @@ export default function ChatbotModal({
 }) {
   const { profile } = useUser();
   const necessaryInformations = useMemo(
+    // Memoize user's personal information to be sent to the AI.
     () => ({
       age: profile?.age,
       weight: profile?.weight,
@@ -38,10 +45,12 @@ export default function ChatbotModal({
   );
 
   const { activities } = useActivities();
-  const maxActivitiesToSend = 10;
-  const activitiesToSend = activities.slice(-maxActivitiesToSend);
+  const maxActivitiesToSend = 10; // Limit the number of activities sent to the AI.
+  const activitiesToSend = activities.slice(-maxActivitiesToSend); // Get the most recent activities.
 
   const systemPrompt = useMemo(
+    // Memoize the system prompt to avoid unnecessary re-renders.
+    // This prompt defines the AI's persona, rules, and context.
     () => `Tu es un coach sportif expert et bienveillant, spécialisé dans la course à pied,
    la nutrition sportive et la récupération. Ton nom est John Deuf.
 
@@ -117,20 +126,27 @@ Bien se nourrir avant une course est crucial pour...".
     [activitiesToSend, necessaryInformations]
   );
 
+  // Initialize conversation manager with the system prompt and a context limit.
   const { allMessages, addUserMessage, addAssistantMessage, getContext } =
     useConversationManager(systemPrompt, 6);
+  // Hook to interact with the Mistral AI API.
   const { sendMessage, isLoading } = useMistralAPI();
-  const bottomRef = useRef<HTMLDivElement | null>(null);
-  const { addTokens, allTokensUsed } = useTokenManager(10000);
-  const [areAllTokensUsed, setAreAllTokensUsed] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null); // Ref for auto-scrolling to the bottom of the chat.
+  const { addTokens, allTokensUsed } = useTokenManager(10000); // Manage AI token usage with a limit of 10000.
+  const [areAllTokensUsed, setAreAllTokensUsed] = useState(false); // State to track if all tokens are used.
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // State for displaying API error messages.
 
   useEffect(() => {
+    // Update token usage status when the `allTokensUsed` function changes.
     setAreAllTokensUsed(allTokensUsed());
   }, [allTokensUsed]);
 
-  const hoursUntilReset = 6;
+  const hoursUntilReset = 6; // Number of hours until token usage resets.
 
+  /**
+   * Handles sending a user message to the AI API.
+   * @param {string} message - The user's message.
+   */
   const sendMessageToAPI = useCallback(
     async (message: string) => {
       setErrorMessage(null);
@@ -152,6 +168,9 @@ Bien se nourrir avant une course est crucial pour...".
     [addAssistantMessage, addTokens, addUserMessage, getContext, sendMessage]
   );
 
+  /**
+   * Retries sending the last message to the AI API in case of an error.
+   */
   const retrySendMessage = useCallback(async () => {
     setErrorMessage(null);
     const response = await sendMessage(getContext());
@@ -165,6 +184,7 @@ Bien se nourrir avant une course est crucial pour...".
   }, [addAssistantMessage, addTokens, getContext, sendMessage]);
 
   useEffect(() => {
+    // Scroll to the bottom of the conversation whenever messages or loading state changes.
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [allMessages, isLoading]);
 

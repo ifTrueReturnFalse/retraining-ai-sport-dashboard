@@ -27,7 +27,7 @@ declare module "next-auth" {
   }
 
   interface User {
-    /** Access token available during sign-in */
+    /** Access token for API requests, available during sign-in and stored in the session */
     accessToken?: string;
   }
 }

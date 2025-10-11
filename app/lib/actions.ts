@@ -68,9 +68,9 @@ export async function fetchUser(accesToken: string) {
 /**
  * Fetches the user's activities for a specified week range.
  *
- * - `accessToken`: JWT access token used for authentication.
- * - `startWeek`: Start date of the week range (ISO string).
- * - `endWeek`: End date of the week range (ISO string).
+ * @param accessToken - JWT access token used for authentication.
+ * @param startWeek - Start date of the week range (ISO string, e.g., "YYYY-MM-DD").
+ * @param endWeek - End date of the week range (ISO string, e.g., "YYYY-MM-DD").
  *
  * @returns A promise that resolves to an array of `ActivityType` if successful, or `null` if the request fails.
  *
@@ -86,6 +86,7 @@ export async function fetchActivities(
   endWeek: string
 ) {
   try {
+    // Retrieve the API URL from environment variables.
     const api_url = process.env.API_URL;
     const result = await fetch(
       `${api_url}/user-activity?startWeek=${startWeek}&endWeek=${endWeek}`,
@@ -95,8 +96,10 @@ export async function fetchActivities(
       }
     );
 
+    // If the response is not OK (e.g., 404 or 500), throw an error.
     if (!result.ok) throw new Error("Failed to fetch activities");
 
+    // Parse the JSON response into an array of ActivityType.
     const data: ActivityType[] = await result.json();
     return data;
   } catch (error) {

@@ -43,10 +43,10 @@ export default function UserProvider({
   const { data: session } = useSession();
 
   // State to store user profile and statistics
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null); // `UserProfile` object or `null`
   const [userStatistics, setUserStatistics] = useState<UserStatistics | null>(
     null
-  );
+  ); // `UserStatistics` object or `null`
   const [loading, setLoading] = useState(false);
 
   /**
@@ -58,20 +58,20 @@ export default function UserProvider({
       setLoading(true);
       try {
         const response = await fetch("/api/user-info");
-        
-        if(!response.ok) throw new Error("API not reachable")
+
+        if (!response.ok) throw new Error("API not reachable");
 
         const data = await response.json();
-        
+
         setUserProfile(data?.profile ?? null);
         setUserStatistics(data?.statistics ?? null);
       } catch (error) {
         console.error("Failed to get user info : ", error);
-        
+
         // Reset data on fetch failure
         setUserProfile(null);
         setUserStatistics(null);
-        
+
         // Trigger a failsafe logout
         signOut({ callbackUrl: "/auth/signin" });
       } finally {
