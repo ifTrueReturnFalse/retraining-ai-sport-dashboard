@@ -1,4 +1,4 @@
-# Projet 6 OC – Dashboard IA Sportif / Project 6 OC – AI Sports Dashboard
+# Projet 5 OC – Dashboard IA Sportif / Project 5 OC – AI Sports Dashboard
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff)](#)
 [![React](https://img.shields.io/badge/React-%2320232a.svg?logo=react&logoColor=%2361DAFB)](#)
